@@ -1,4 +1,4 @@
-package org.zgrinber.tracing;
+package org.zgrinber.tracing.microservice2;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
