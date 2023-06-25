@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.Client;
@@ -15,13 +14,13 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 import org.zgrinber.tracing.common.dto.CarDto;
 import org.zgrinber.tracing.common.exceptions.RestApiException;
-import org.zgrinber.tracing.microservice1.exceptions.RestApiExceptionHandler;
+import org.zgrinber.tracing.common.service.CarService;
 
 import java.util.List;
 
 @Default
 @ApplicationScoped
-public class CarServiceImpl implements CarService{
+public class CarServiceImpl implements CarService {
 
     @Inject
     private Client restClient;
@@ -74,7 +73,13 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public void deleteCar(String carId) {
+    public void deleteCar(String carId) throws RestApiException {
+        WebTarget msURL = restClient.target(dbServiceUrl + "/car/" + carId);
+        Response response = msURL.request().delete();
+        if (response.getStatus()!= HttpStatus.SC_OK)
+        {
+            throw new RestApiException("Failed to delete car, kindly checks logs or turn to system admin for further details",response.getStatus(),formatOriginalMessage(response));
+        }
 
     }
 

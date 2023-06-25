@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class CarDto
 {
-
+    private String id;
     private String manufacturer;
     private String country;
     private String model;
@@ -13,7 +13,17 @@ public class CarDto
     private Integer price;
     private String currency;
 
-    public CarDto(String manufacturer, String country, String model, Integer year, String color, Integer price, String currency) {
+
+    public static CarDto getNewCarDtoInstance()
+    {
+        return new CarDto();
+    }
+
+    private CarDto()
+    {
+
+    }
+    public CarDto(String id,String manufacturer, String country, String model, Integer year, String color, Integer price, String currency) {
         this.manufacturer = manufacturer;
         this.country = country;
         this.model = model;
@@ -21,6 +31,8 @@ public class CarDto
         this.color = color;
         this.price = price;
         this.currency = currency;
+        this.id = id;
+
     }
 
     public boolean equals(Object object) {
@@ -28,11 +40,11 @@ public class CarDto
         if (object == null || getClass() != object.getClass()) return false;
         if (!super.equals(object)) return false;
         CarDto carDto = (CarDto) object;
-        return java.util.Objects.equals(manufacturer, carDto.manufacturer) && java.util.Objects.equals(country, carDto.country) && java.util.Objects.equals(model, carDto.model) && java.util.Objects.equals(year, carDto.year) && java.util.Objects.equals(color, carDto.color) && java.util.Objects.equals(price, carDto.price) && java.util.Objects.equals(currency, carDto.currency);
+        return java.util.Objects.equals(id, carDto.id) && java.util.Objects.equals(manufacturer, carDto.manufacturer) && java.util.Objects.equals(country, carDto.country) && java.util.Objects.equals(model, carDto.model) && java.util.Objects.equals(year, carDto.year) && java.util.Objects.equals(color, carDto.color) && java.util.Objects.equals(price, carDto.price) && java.util.Objects.equals(currency, carDto.currency);
     }
 
     public int hashCode() {
-        return Objects.hash(super.hashCode(), manufacturer, country, model, year, color, price, currency);
+        return Objects.hash(super.hashCode(), id,  manufacturer, country, model, year, color, price, currency);
     }
 
     public String getManufacturer() {
@@ -91,10 +103,20 @@ public class CarDto
         this.currency = currency;
     }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @java.lang.Override
     public java.lang.String toString() {
         return "CarDto{" +
-                "manufacturer='" + manufacturer + '\'' +
+                "id='" + id + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
                 ", country='" + country + '\'' +
                 ", model='" + model + '\'' +
                 ", year=" + year +
@@ -103,4 +125,5 @@ public class CarDto
                 ", currency='" + currency + '\'' +
                 '}';
     }
+
 }

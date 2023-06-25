@@ -1,1 +1,3 @@
 org/zgrinber/tracing/common/dto/CarDto.class
+org/zgrinber/tracing/common/service/CarService.class
+org/zgrinber/tracing/common/exceptions/RestApiException.class

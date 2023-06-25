@@ -1,4 +1,5 @@
-package org.zgrinber.tracing.microservice1.api;
+package org.zgrinber.tracing.microservice2.api;
+
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

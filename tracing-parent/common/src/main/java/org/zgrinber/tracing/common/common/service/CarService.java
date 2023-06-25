@@ -1,4 +1,4 @@
-package org.zgrinber.tracing.microservice1.service;
+package org.zgrinber.tracing.common.service;
 
 import org.zgrinber.tracing.common.dto.CarDto;
 import org.zgrinber.tracing.common.exceptions.RestApiException;
@@ -12,7 +12,7 @@ public interface CarService {
     void createCar(CarDto car) throws RestApiException;
     void updateCar(CarDto car) throws RestApiException;
 
-    void deleteCar(String carId);
+    void deleteCar(String carId) throws RestApiException;
 
 
 
