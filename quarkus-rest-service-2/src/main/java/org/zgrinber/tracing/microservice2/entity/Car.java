@@ -2,13 +2,11 @@ package org.zgrinber.tracing.microservice2.entity;
 
 import io.quarkus.mongodb.panache.common.MongoEntity;
 import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.types.ObjectId;
-import org.zgrinber.tracing.common.dto.CarDto;
 
 @MongoEntity
 public class Car {
     @BsonId
-    private String id;
+    private String carId;
     private String companyManufacturer;
     private String countryOfOrigin;
     private String model;
@@ -18,12 +16,12 @@ public class Car {
     private String currency;
 
 
-    public String getId() {
-        return id;
+    public String getCarId() {
+        return carId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCarId(String carId) {
+        this.carId = carId;
     }
 
     public String getCompanyManufacturer() {

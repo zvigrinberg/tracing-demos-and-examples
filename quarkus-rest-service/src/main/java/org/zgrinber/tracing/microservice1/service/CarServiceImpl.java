@@ -37,7 +37,7 @@ public class CarServiceImpl implements CarService {
             throw new RestApiException("Failed to get the car object of car id=" + carId , response.getStatus(),formatOriginalMessage(response));
         }
 
-        return (CarDto)response.getEntity();
+        return response.readEntity(CarDto.class);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CarServiceImpl implements CarService {
         {
             throw new RestApiException("Failed to get list of cars",response.getStatus(), formatOriginalMessage(response));
         }
-        List<CarDto> cars = (List<CarDto>) response.getEntity();
+        List<CarDto> cars = response.readEntity(List.class);
         return cars;
     }
     @Override
@@ -58,6 +58,10 @@ public class CarServiceImpl implements CarService {
         if (response.getStatus()!= HttpResponseStatus.CREATED.code())
         {
             throw new RestApiException("Failed to create car, kindly checks logs or turn to system admin for further details",response.getStatus(),formatOriginalMessage(response));
+        }
+        else {
+            int lastSlash = response.getHeaderString("Location").lastIndexOf("/");
+            car.setId(response.getHeaderString("Location").substring(lastSlash + 1));
         }
 
     }

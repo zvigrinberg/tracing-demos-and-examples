@@ -4,7 +4,6 @@ import io.quarkus.mongodb.panache.PanacheQuery;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
-import org.bson.types.ObjectId;
 import org.zgrinber.tracing.common.dto.CarDto;
 import org.zgrinber.tracing.common.exceptions.RestApiException;
 import org.zgrinber.tracing.common.service.CarService;
@@ -25,7 +24,7 @@ public class CarServiceDbImpl implements CarService {
     @Override
     public CarDto getOneCar(String carId) throws RestApiException {
         CarDto newCarDtoInstance;
-        Car car = carRepository.findById(carId);
+        Car car = carRepository.findByCarId(carId);
         if(car!= null) {
 
             newCarDtoInstance = CarDto.getNewCarDtoInstance();
@@ -116,7 +115,7 @@ public class CarServiceDbImpl implements CarService {
         newCarDtoInstance.setColor(car.getColor());
         newCarDtoInstance.setCountry(car.getCountryOfOrigin());
         newCarDtoInstance.setCurrency(car.getCurrency());
-        newCarDtoInstance.setId(car.getId());
+        newCarDtoInstance.setId(car.getCarId());
         newCarDtoInstance.setManufacturer(car.getCompanyManufacturer());
         newCarDtoInstance.setModel(car.getModel());
         newCarDtoInstance.setPrice(car.getTotalPrice());
@@ -129,7 +128,7 @@ public class CarServiceDbImpl implements CarService {
         newCar.setCompanyManufacturer(carDto.getManufacturer());
         newCar.setCountryOfOrigin(carDto.getCountry());
         newCar.setCurrency(carDto.getCurrency());
-        newCar.setId(carDto.getId());
+        newCar.setCarId(carDto.getId());
         newCar.setModel(carDto.getModel());
         newCar.setProductionYear(carDto.getYear());
         newCar.setTotalPrice(carDto.getPrice());

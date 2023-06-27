@@ -9,9 +9,8 @@ import org.zgrinber.tracing.microservice2.entity.Car;
 public class CarRepository implements PanacheMongoRepositoryBase<Car,String> {
 
 
-    @Override
-    public Car findById(String id) {
-        return find("id",id).firstResult();
+    public Car findByCarId(String id) {
+        return find("_id",id).firstResult();
     }
 
 
