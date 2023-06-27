@@ -12,7 +12,7 @@ public class RestApiExceptionHandler implements ExceptionMapper<RestApiException
     @Override
     public Response toResponse(RestApiException exception) {
 //        return Response.status(Response.Status.BAD_REQUEST).entity(exception.getMessage()).build();
-        LOG.errorf("Got an error from DB, error message %s",exception.getOriginalMessage());
+        LOG.errorf("Got an error from DB, error message=  %s",exception.getOriginalMessage());
         return Response.status(exception.getHttpStatusCode()).entity(exception.getMessage()).build();
 
     }

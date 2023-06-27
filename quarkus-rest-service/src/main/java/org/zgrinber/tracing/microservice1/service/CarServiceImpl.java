@@ -2,11 +2,12 @@ package org.zgrinber.tracing.microservice1.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Response;
@@ -22,8 +23,8 @@ import java.util.List;
 @ApplicationScoped
 public class CarServiceImpl implements CarService {
 
-    @Inject
-    private Client restClient;
+
+    private Client restClient= ClientBuilder.newClient();
     @ConfigProperty(name = "microservices.tracing.databaseAppUrl")
     private String dbServiceUrl;
     private final Logger LOG = Logger.getLogger(CarServiceImpl.class);
@@ -31,7 +32,7 @@ public class CarServiceImpl implements CarService {
     public CarDto getOneCar(String carId) throws RestApiException {
         WebTarget msURL = restClient.target(dbServiceUrl + "/car/" + carId);
         Response response = msURL.request().get();
-        if (response.getStatus()!= HttpStatus.SC_OK)
+        if (response.getStatus()!= HttpResponseStatus.OK.code())
         {
             throw new RestApiException("Failed to get the car object of car id=" + carId , response.getStatus(),formatOriginalMessage(response));
         }
@@ -43,7 +44,7 @@ public class CarServiceImpl implements CarService {
     public List<CarDto> getAllCars() throws RestApiException {
         WebTarget msURL = restClient.target(dbServiceUrl + "/car");
         Response response = msURL.request().get();
-        if (response.getStatus()!= HttpStatus.SC_OK)
+        if (response.getStatus()!= HttpResponseStatus.OK.code())
         {
             throw new RestApiException("Failed to get list of cars",response.getStatus(), formatOriginalMessage(response));
         }
@@ -54,7 +55,7 @@ public class CarServiceImpl implements CarService {
     public void createCar(CarDto car) throws RestApiException {
         WebTarget msURL = restClient.target(dbServiceUrl + "/car");
         Response response = msURL.request().post(Entity.json(car));
-        if (response.getStatus()!= HttpStatus.SC_CREATED)
+        if (response.getStatus()!= HttpResponseStatus.CREATED.code())
         {
             throw new RestApiException("Failed to create car, kindly checks logs or turn to system admin for further details",response.getStatus(),formatOriginalMessage(response));
         }
@@ -65,7 +66,7 @@ public class CarServiceImpl implements CarService {
     public void updateCar(CarDto car) throws RestApiException {
         WebTarget msURL = restClient.target(dbServiceUrl + "/car");
         Response response = msURL.request().put(Entity.json(car));
-        if (response.getStatus()!= HttpStatus.SC_OK)
+        if (response.getStatus()!= HttpResponseStatus.OK.code())
         {
             throw new RestApiException("Failed to update car, kindly checks logs or turn to system admin for further details",response.getStatus(),formatOriginalMessage(response));
         }
@@ -76,7 +77,7 @@ public class CarServiceImpl implements CarService {
     public void deleteCar(String carId) throws RestApiException {
         WebTarget msURL = restClient.target(dbServiceUrl + "/car/" + carId);
         Response response = msURL.request().delete();
-        if (response.getStatus()!= HttpStatus.SC_OK)
+        if (response.getStatus()!= HttpResponseStatus.OK.code() && response.getStatus()!= HttpResponseStatus.NO_CONTENT.code())
         {
             throw new RestApiException("Failed to delete car, kindly checks logs or turn to system admin for further details",response.getStatus(),formatOriginalMessage(response));
         }
@@ -84,25 +85,13 @@ public class CarServiceImpl implements CarService {
     }
 
     private String formatOriginalMessage(Response response) {
-        return response.getEntity() == null ? "" : decodeResponse(response.getEntity());
+        return response.getEntity() == null ? "" : readResponse(response);
     }
 
-    private String decodeResponse(Object entity) {
-        ObjectMapper om;
-        String result;
-        if(entity instanceof String) {
-            result =  (String) entity;
-        }
-        else
-        {
-            om = new ObjectMapper();
-            try {
-                result = om.writerWithDefaultPrettyPrinter().writeValueAsString(entity);
-            } catch (JsonProcessingException e) {
-                LOG.warnf("Couldn't decode response object from server, error message of deserialization = %s, original error message of deserialization = %s",e.getMessage(),e.getOriginalMessage());
-                result ="";
-            }
-        }
+    private String readResponse(Response resp) {
+
+        String result="";
+        result = resp.readEntity(String.class);
         return result;
     }
 

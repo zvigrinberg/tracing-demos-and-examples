@@ -1,9 +1,13 @@
 package org.zgrinber.tracing.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Objects;
+
 
 public class CarDto
 {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String id;
     private String manufacturer;
     private String country;

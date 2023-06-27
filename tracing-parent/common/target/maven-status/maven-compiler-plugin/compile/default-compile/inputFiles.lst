@@ -1,1 +1,3 @@
-/home/zgrinber/git/tracing-demos-and-examples/tracing-parent/common/src/main/java/org/zgrinber/tracing/common/dto/CarDto.java
+/home/zgrinber/git/tracing-demos-and-examples/tracing-parent/common/src/main/java/org/zgrinber/tracing/common/common/dto/CarDto.java
+/home/zgrinber/git/tracing-demos-and-examples/tracing-parent/common/src/main/java/org/zgrinber/tracing/common/common/service/CarService.java
+/home/zgrinber/git/tracing-demos-and-examples/tracing-parent/common/src/main/java/org/zgrinber/tracing/common/common/exceptions/RestApiException.java

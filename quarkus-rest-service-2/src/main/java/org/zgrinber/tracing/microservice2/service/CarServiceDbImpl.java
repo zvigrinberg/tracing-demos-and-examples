@@ -1,6 +1,8 @@
 package org.zgrinber.tracing.microservice2.service;
 
 import io.quarkus.mongodb.panache.PanacheQuery;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
 import org.bson.types.ObjectId;
 import org.zgrinber.tracing.common.dto.CarDto;
@@ -13,6 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+@Default
+@ApplicationScoped
 public class CarServiceDbImpl implements CarService {
 
     @Inject
@@ -38,6 +42,7 @@ public class CarServiceDbImpl implements CarService {
     }
 
     @Override
+
     public List<CarDto> getAllCars() throws RestApiException {
         List<Car> list;
         List<CarDto> dtoList;
