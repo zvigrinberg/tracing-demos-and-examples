@@ -33,7 +33,16 @@
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>7.4</version>
+			<!-- Use runtime scope if the project does not have any compile-time usage of logstash-logback-encoder,
+                 such as usage of StructuredArguments/Markers or implementations such as
+                 JsonProvider, AppenderListener, JsonFactoryDecorator, JsonGeneratorDecorator, etc
+            <scope>runtime</scope>
+            -->
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

@@ -4,6 +4,11 @@ import io.quarkus.mongodb.panache.PanacheQuery;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.Response;
+import org.jboss.logging.Logger;
 import org.zgrinber.tracing.common.dto.CarDto;
 import org.zgrinber.tracing.common.exceptions.RestApiException;
 import org.zgrinber.tracing.common.service.CarService;
@@ -18,8 +23,10 @@ import java.util.UUID;
 @ApplicationScoped
 public class CarServiceDbImpl implements CarService {
 
+    Logger LOG = Logger.getLogger(CarServiceDbImpl.class);
     @Inject
     private CarRepository carRepository;
+    Client client = ClientBuilder.newClient();
 
     @Override
     public CarDto getOneCar(String carId) throws RestApiException {
@@ -72,6 +79,9 @@ public class CarServiceDbImpl implements CarService {
         mapDtoToDb(carDto,newCar);
         try {
             carRepository.persist(newCar);
+            LOG.info("about to call notifications microservice");
+            WebTarget msURL = client.target("http://localhost:8082" + "/notify");
+            Response response = msURL.request().get();
         }
         catch (Exception e)
         {
