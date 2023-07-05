@@ -8,6 +8,8 @@ import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 import org.zgrinber.tracing.common.dto.CarDto;
 import org.zgrinber.tracing.common.exceptions.RestApiException;
@@ -27,6 +29,8 @@ public class CarServiceDbImpl implements CarService {
     @Inject
     private CarRepository carRepository;
     Client client = ClientBuilder.newClient();
+    @ConfigProperty(name = "microservices.tracing.notificationMsUrl")
+    private String notificationMsUrl;
 
     @Override
     public CarDto getOneCar(String carId) throws RestApiException {
@@ -80,7 +84,7 @@ public class CarServiceDbImpl implements CarService {
         try {
             carRepository.persist(newCar);
             LOG.info("about to call notifications microservice");
-            WebTarget msURL = client.target("http://localhost:8082" + "/notify");
+            WebTarget msURL = client.target(notificationMsUrl + "/notify");
             Response response = msURL.request().get();
         }
         catch (Exception e)
