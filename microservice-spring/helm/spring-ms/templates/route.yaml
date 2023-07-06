@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: {{ include "spring-ms.fullname" . }}
+  name: {{ include "spring-ms.fullname" . }}
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: {{ include "spring-ms.fullname" . }}
