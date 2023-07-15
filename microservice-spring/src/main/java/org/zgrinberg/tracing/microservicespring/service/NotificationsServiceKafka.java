@@ -22,7 +22,7 @@ public class NotificationsServiceKafka implements NotificationsService {
 
     @Override
     public void sendNotification(String carId) {
-        CompletableFuture<SendResult<String, String>> send = kafkaTemplate.send(topicName, String.format("Car with id %s just inserted to DB", carId));
+        CompletableFuture<SendResult<String, String>> send = kafkaTemplate.send(topicName, carId, String.format("Car with id %s just inserted to DB", carId));
         send.whenComplete((result,ex) -> {
             if(ex == null)
             {
